@@ -4,29 +4,35 @@ import requests
 from requests.exceptions import ConnectionError
 
 
-def request(coda_token, url):
+def request(coda_token, url, payload=None, method='get'):
     if not url.startswith('https://'):
         url = f'https://coda.io/apis/v1beta1/{url}'
     print(url)
     headers = {'Authorization': f'Bearer {coda_token}'}
     try:
-        result = requests.get(url, headers=headers).json()
+        if method == 'get':
+            response = requests.get(url, headers=headers)
+        elif method == 'post':
+            response = requests.post(url, headers=headers, json=payload)
+        elif method == 'put':
+            response = requests.put(url, headers=headers, json=payload)
+        else:
+            raise NotImplementedError()
     except ConnectionError:
         ...  # todo: something?
         raise
+    response.raise_for_status()  # Throw if there was an error.
+    result = response.json()
     # pprint(result)  # for debug
     return result
 
 
 def request_put(coda_token, url, payload):
-    url = f'https://coda.io/apis/v1beta1/{url}'
-    print(url)
-    headers = {'Authorization': f'Bearer {coda_token}'}
-    request = requests.put(url, headers=headers, json=payload)
-    request.raise_for_status()  # Throw if there was an error.
-    result = request.json()
-    # pprint(result)  # for debug
-    return result
+    return request(coda_token, url, payload, 'put')
+
+
+def request_post(coda_token, url, payload):
+    return request(coda_token, url, payload, 'post')
 
 
 def get_tables(coda_token, doc_id):
@@ -141,3 +147,33 @@ def update_row(coda_token, doc_id, table_id, columns, row_id, data):
             'value': col_value
         })
     return request_put(coda_token, url, payload)
+
+
+def update_row_by_yaml(coda_token, doc_id, table_info, row_id, data):
+    return update_row(coda_token, doc_id, table_info['table_id'],
+                      table_info['columns'], row_id, data)
+
+
+def append_row(coda_token, doc_id, table_id, columns, data):
+    url = f'docs/{doc_id}/tables/{table_id}/rows'
+    payload = {
+        'rows': [
+            {
+                'cells': [
+                    # {'column': '<column ID>',
+                    #  'value': 'Get groceries from Whole Foods'},
+                ],
+            }
+        ],
+    }
+    for col_name, col_value in data.items():
+        payload['rows'][0]['cells'].append({
+            'column': columns[col_name],
+            'value': col_value
+        })
+    return request_post(coda_token, url, payload)
+
+
+def append_row_by_yaml(coda_token, doc_id, table_info, data):
+    return append_row(coda_token, doc_id, table_info['table_id'],
+                      table_info['columns'], data)
