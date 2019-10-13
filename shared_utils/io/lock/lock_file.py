@@ -1,7 +1,7 @@
 import os
 from os.path import exists
 
-from shared_utils.common import dt
+from shared_utils.common.dt import dt
 from shared_utils.io.io import write
 from shared_utils.io.path import encoded_filename
 from shared_utils.io.lock.exceptions import LockError, UnlockError
