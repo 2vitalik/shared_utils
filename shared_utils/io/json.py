@@ -1,6 +1,6 @@
 import json
 
-from io.path import encoded_filename, ensure_parent_dir
+from shared_utils.io.path import encoded_filename, ensure_parent_dir
 
 
 @encoded_filename

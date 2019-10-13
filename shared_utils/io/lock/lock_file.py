@@ -1,10 +1,10 @@
 import os
 from os.path import exists
 
-from common.dt import dt
-from io.io import write
-from io.path import encoded_filename
-from io.lock.exceptions import LockError, UnlockError
+from shared_utils.common import dt
+from shared_utils.io.io import write
+from shared_utils.io.path import encoded_filename
+from shared_utils.io.lock.exceptions import LockError, UnlockError
 
 
 @encoded_filename
