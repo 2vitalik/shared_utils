@@ -1,4 +1,4 @@
-from shared_utils.conf import conf
+from shared_utils.conf.conf import conf
 
 
 def debugging_function(func):

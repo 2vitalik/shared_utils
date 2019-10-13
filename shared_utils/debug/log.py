@@ -2,7 +2,7 @@ import traceback
 from os.path import join
 
 from shared_utils.common.dt import dt, dtf
-from shared_utils.conf import conf
+from shared_utils.conf.conf import conf
 from shared_utils.io.io import append
 from shared_utils.io.path import ensure_parent_dir
 
