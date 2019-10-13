@@ -9,3 +9,7 @@ logs_path = None
 
 # other:
 debugging = False
+
+timing_skip_desc = False
+timing_prefix = '@'
+timing_suffix = ''
