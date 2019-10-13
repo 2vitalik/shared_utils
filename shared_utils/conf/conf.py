@@ -5,6 +5,9 @@ class conf:
     dynalist_token = None
     telegram_token = None
 
-    logs_path = None
+    # logs_path = None
 
     debugging = False
+
+
+logs_path = None
