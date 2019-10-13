@@ -28,21 +28,28 @@ def send(bot, chat_id, text, keyboard=None, buttons=None):
     else:
         reply_markup = None
 
-    return bot.send_message(chat_id=chat_id, text=text,
-                            reply_markup=reply_markup,
-                            parse_mode=telegram.ParseMode.HTML)
+    return bot.send_message(
+        chat_id=chat_id,
+        text=text,
+        reply_markup=reply_markup,
+        parse_mode=telegram.ParseMode.HTML,
+        disable_web_page_preview=True,
+    )
 
 
-def edit(bot, chat_id, msg_id, text, buttons=None):
+def edit(bot, chat_id, message_id, text, buttons=None):
     reply_markup = None
     if buttons:
         reply_markup = process_buttons(buttons)
 
-    return bot.edit_message_text(text=text, chat_id=chat_id,
-                                 message_id=msg_id,
-                                 reply_markup=reply_markup,
-                                 parse_mode=telegram.ParseMode.HTML,
-                                 disable_web_page_preview=True)
+    return bot.edit_message_text(
+        text=text,
+        chat_id=chat_id,
+        message_id=message_id,
+        reply_markup=reply_markup,
+        parse_mode=telegram.ParseMode.HTML,
+        disable_web_page_preview=True,
+    )
 
 
 def delete(bot, chat_id, msg_id):
