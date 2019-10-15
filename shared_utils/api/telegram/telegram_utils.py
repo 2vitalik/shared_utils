@@ -54,3 +54,12 @@ def edit(bot, chat_id, message_id, text, buttons=None):
 
 def delete(bot, chat_id, msg_id):
     bot.delete_message(chat_id, msg_id)
+
+
+def callback(query, text, buttons):
+    query.edit_message_text(
+        text=text,
+        reply_markup=process_buttons(buttons),
+        parse_mode=telegram.ParseMode.HTML,
+        disable_web_page_preview=True,
+    )
