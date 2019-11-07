@@ -18,7 +18,7 @@ def process_buttons(buttons):
     ])
 
 
-def send(bot, chat_id, text, keyboard=None, buttons=None):
+def send(bot, chat_id, text, keyboard=None, buttons=None, silent=False):
     bot.send_chat_action(chat_id=chat_id, action=telegram.ChatAction.TYPING)
 
     if keyboard:
@@ -34,6 +34,7 @@ def send(bot, chat_id, text, keyboard=None, buttons=None):
         reply_markup=reply_markup,
         parse_mode=telegram.ParseMode.HTML,
         disable_web_page_preview=True,
+        disable_notification=silent,
     )
 
 
