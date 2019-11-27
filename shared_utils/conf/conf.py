@@ -7,6 +7,7 @@ telegram_token = None
 # slack:
 slack_disabled = False
 slack_hooks = {}
+slack_path = None
 
 # paths:
 logs_path = None
