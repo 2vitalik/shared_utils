@@ -1,7 +1,8 @@
+import time
 from pprint import pprint
 
 import requests
-from requests.exceptions import ConnectionError
+from requests.exceptions import ConnectionError, HTTPError
 
 
 def request(coda_token, url, payload=None, method='get'):
@@ -9,19 +10,29 @@ def request(coda_token, url, payload=None, method='get'):
         url = f'https://coda.io/apis/v1beta1/{url}'
     print(url)
     headers = {'Authorization': f'Bearer {coda_token}'}
-    try:
+
+    def make_request():
         if method == 'get':
-            response = requests.get(url, headers=headers)
+            return requests.get(url, headers=headers)
         elif method == 'post':
-            response = requests.post(url, headers=headers, json=payload)
+            return requests.post(url, headers=headers, json=payload)
         elif method == 'put':
-            response = requests.put(url, headers=headers, json=payload)
+            return requests.put(url, headers=headers, json=payload)
         else:
             raise NotImplementedError()
+
+    try:
+        response = make_request()
     except ConnectionError:
         ...  # todo: something?
         raise
-    response.raise_for_status()  # Throw if there was an error.
+    try:
+        response.raise_for_status()  # Throw if there was an error (1)
+    except HTTPError:
+        time.sleep(1)
+        response = make_request()  # make another attempt
+        response.raise_for_status()  # Throw if there was an error (2)
+
     result = response.json()
     # pprint(result)  # for debug
     return result
