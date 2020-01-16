@@ -1,4 +1,5 @@
 import json
+from os.path import exists
 
 from shared_utils.io.path import encoded_filename, ensure_parent_dir
 
