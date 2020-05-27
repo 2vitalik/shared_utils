@@ -31,7 +31,11 @@ def request(coda_token, url, payload=None, method='get'):
     except HTTPError:
         time.sleep(1)
         response = make_request()  # make another attempt
-        response.raise_for_status()  # Throw if there was an error (2)
+        try:
+            response.raise_for_status()  # Throw if there was an error (2)
+        except HTTPError:
+            print(response.content)
+            raise
 
     result = response.json()
     # pprint(result)  # for debug
