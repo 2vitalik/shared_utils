@@ -7,7 +7,7 @@ from requests.exceptions import ConnectionError, HTTPError
 
 def request(coda_token, url, payload=None, method='get'):
     if not url.startswith('https://'):
-        url = f'https://coda.io/apis/v1beta1/{url}'
+        url = f'https://coda.io/apis/v1/{url}'
     print(url)
     headers = {'Authorization': f'Bearer {coda_token}'}
 
