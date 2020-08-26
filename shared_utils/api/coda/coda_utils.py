@@ -192,3 +192,13 @@ def append_row(coda_token, doc_id, table_id, columns, data):
 def append_row_by_yaml(coda_token, doc_id, table_info, data):
     return append_row(coda_token, doc_id, table_info['table_id'],
                       table_info['columns'], data)
+
+
+def mutation_status(coda_token, request_id):
+    url = f'mutationStatus/{request_id}'
+    return request(coda_token, url)
+
+
+def is_request_completed(coda_token, request_id):
+    result = mutation_status(coda_token, request_id)
+    return result['completed']
