@@ -84,8 +84,10 @@ def print_columns(coda_token, doc_id, table_id):
         print(f"{column['name']}: {column['id']}")
 
 
-def get_rows(coda_token, doc_id, table_id):
-    data = request(coda_token, f'docs/{doc_id}/tables/{table_id}/rows')
+def get_rows(coda_token, doc_id, table_id, query=None):
+    payload = {'query': query} if query else None
+    data = \
+        request(coda_token, f'docs/{doc_id}/tables/{table_id}/rows', payload)
     next_link = data.get('nextPageLink')
     if next_link:
         next_data = get_next_rows(coda_token, next_link)
@@ -102,9 +104,9 @@ def get_next_rows(coda_token, next_link):
     return data
 
 
-def get_rows_data(coda_token, doc_id, table_id, columns):
+def get_rows_data(coda_token, doc_id, table_id, columns, query=None):
     results = []
-    rows = get_rows(coda_token, doc_id, table_id)
+    rows = get_rows(coda_token, doc_id, table_id, query)
     for row in rows['items']:
         entry = {
             'id': row['id'],
@@ -118,9 +120,9 @@ def get_rows_data(coda_token, doc_id, table_id, columns):
     return results  # todo: sort by index?
 
 
-def get_rows_dict(coda_token, doc_id, table_id, columns):
+def get_rows_dict(coda_token, doc_id, table_id, columns, query=None):
     results = {}
-    rows = get_rows(coda_token, doc_id, table_id)
+    rows = get_rows(coda_token, doc_id, table_id, query)
     for row in rows['items']:
         entry = {}
         for col_name, col_id in columns.items():
@@ -131,18 +133,20 @@ def get_rows_dict(coda_token, doc_id, table_id, columns):
     return results  # todo: sort by key?
 
 
-def get_rows_data_by_yaml(coda_token, doc_id, table_info):
+def get_rows_data_by_yaml(coda_token, doc_id, table_info, query=None):
     return get_rows_data(coda_token, doc_id,
-                         table_info['table_id'], table_info['columns'])
+                         table_info['table_id'], table_info['columns'],
+                         query)
 
 
-def get_rows_dict_by_yaml(coda_token, doc_id, table_info):
+def get_rows_dict_by_yaml(coda_token, doc_id, table_info, query=None):
     return get_rows_dict(coda_token, doc_id,
-                         table_info['table_id'], table_info['columns'])
+                         table_info['table_id'], table_info['columns'],
+                         query)
 
 
-def print_rows(coda_token, doc_id, table_id):
-    rows = get_rows(coda_token, doc_id, table_id)
+def print_rows(coda_token, doc_id, table_id, query=None):
+    rows = get_rows(coda_token, doc_id, table_id, query)
     pprint(rows)
 
 
