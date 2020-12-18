@@ -4,6 +4,10 @@ from os.path import exists
 from shared_utils.io.path import encoded_filename, ensure_parent_dir
 
 
+def json_dumps(data):
+    return json.dumps(data, indent=4, ensure_ascii=False)
+
+
 @encoded_filename
 def json_dump(filename, data):
     ensure_parent_dir(filename)
@@ -19,7 +23,7 @@ def json_load(filename):
 
 @encoded_filename
 def json_dump_changed(filename, data):
-    new_data = json.dumps(data, indent=4, ensure_ascii=False)
-    old_data = json_load(filename) if exists(filename) else None
+    old_data = json_dumps(json_load(filename) if exists(filename) else None)
+    new_data = json_dumps(data)
     if old_data != new_data:
         json_dump(filename, data)
