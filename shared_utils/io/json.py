@@ -27,3 +27,5 @@ def json_dump_changed(filename, data):
     new_data = json_dumps(data)
     if old_data != new_data:
         json_dump(filename, data)
+        return True
+    return False

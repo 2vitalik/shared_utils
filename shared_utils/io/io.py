@@ -40,3 +40,12 @@ def append(filename, line):
 
 def compare(filename1, filename2):
     return read(filename1) == read(filename2)
+
+
+@encoded_filename
+def write_changed(filename, new_content):
+    old_content = read(filename) if exists(filename) else None
+    if old_content != new_content:
+        write(filename, new_content)
+        return True
+    return False
