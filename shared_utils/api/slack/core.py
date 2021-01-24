@@ -15,7 +15,11 @@ def post_to_slack(chat, message, emoji=None):
         message = f':{emoji}: {message}'
     if conf.slack_path:
         path = f'{conf.slack_path}/{chat}/{dtf("Ym/Ymd")}.txt'
-        append(path, f'[{dt()}] {message}')
+        if conf.slack_multiline:
+            output = f'[{dt()}]\n{message}\n'
+        else:
+            output = f'[{dt()}] {message}'
+        append(path, output)
     if url is None:  # if there is no such key
         return False
     if url == '':  # if key is equal to '' in a special way

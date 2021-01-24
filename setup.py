@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="shared-utils",
-    version="0.0.21",
+    version="0.0.22",
     author="Vitalik",
     author_email="2vitalik@gmail.com",
     description="Shared utils for different projects",
