@@ -1,4 +1,5 @@
 import telegram
+from telegram.error import BadRequest
 
 
 def process_keyboard(keyboard):
@@ -18,6 +19,14 @@ def process_buttons(buttons):
     ])
 
 
+class ChatNotFoundError(BadRequest):
+    pass
+
+
+class MessageNotModifiedError(BadRequest):
+    pass
+
+
 def send(bot, chat_id, text, keyboard=None, buttons=None, silent=False):
     bot.send_chat_action(chat_id=chat_id, action=telegram.ChatAction.TYPING)
 
@@ -28,14 +37,19 @@ def send(bot, chat_id, text, keyboard=None, buttons=None, silent=False):
     else:
         reply_markup = None
 
-    return bot.send_message(
-        chat_id=chat_id,
-        text=text,
-        reply_markup=reply_markup,
-        parse_mode=telegram.ParseMode.HTML,
-        disable_web_page_preview=True,
-        disable_notification=silent,
-    )
+    try:
+        return bot.send_message(
+            chat_id=chat_id,
+            text=text,
+            reply_markup=reply_markup,
+            parse_mode=telegram.ParseMode.HTML,
+            disable_web_page_preview=True,
+            disable_notification=silent,
+        )
+    except BadRequest as e:
+        if 'Chat not found' in str(e):
+            raise ChatNotFoundError(e) from e
+        raise
 
 
 def edit(bot, chat_id, message_id, text, buttons=None):
@@ -43,14 +57,21 @@ def edit(bot, chat_id, message_id, text, buttons=None):
     if buttons:
         reply_markup = process_buttons(buttons)
 
-    return bot.edit_message_text(
-        text=text,
-        chat_id=chat_id,
-        message_id=message_id,
-        reply_markup=reply_markup,
-        parse_mode=telegram.ParseMode.HTML,
-        disable_web_page_preview=True,
-    )
+    try:
+        return bot.edit_message_text(
+            text=text,
+            chat_id=chat_id,
+            message_id=message_id,
+            reply_markup=reply_markup,
+            parse_mode=telegram.ParseMode.HTML,
+            disable_web_page_preview=True,
+        )
+    except BadRequest as e:
+        if 'Chat not found' in str(e):
+            raise ChatNotFoundError(e) from e
+        if 'Message is not modified' in str(e):
+            raise MessageNotModifiedError(e) from e
+        raise
 
 
 def delete(bot, chat_id, msg_id):

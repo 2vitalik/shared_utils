@@ -3,7 +3,7 @@ from os.path import join
 from shared_utils.io.lock.lock_file import lock_file, unlock_file
 
 
-def locked(slug, path='.'):
+def locked(slug, path='.', timeout=...):  # todo: если слишком давно -- уже не считается...
     def decorator(func):
         def wrapped(*args, **kwargs):
             lock_path = join(path, slug)
