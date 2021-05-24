@@ -18,6 +18,8 @@ def request(coda_token, url, payload=None, method='get'):
             return requests.post(url, headers=headers, json=payload)
         elif method == 'put':
             return requests.put(url, headers=headers, json=payload)
+        elif method == 'delete':
+            return requests.put(url, headers=headers)
         else:
             raise NotImplementedError()
 
@@ -48,6 +50,10 @@ def request_put(coda_token, url, payload):
 
 def request_post(coda_token, url, payload):
     return request(coda_token, url, payload, 'post')
+
+
+def request_delete(coda_token, url):
+    return request(coda_token, url, None, 'delete')
 
 
 def get_tables(coda_token, doc_id):
@@ -196,6 +202,11 @@ def append_row(coda_token, doc_id, table_id, columns, data):
 def append_row_by_yaml(coda_token, doc_id, table_info, data):
     return append_row(coda_token, doc_id, table_info['table_id'],
                       table_info['columns'], data)
+
+
+def remove_row(coda_token, doc_id, table_id, row_id):
+    url = f'docs/{doc_id}/tables/{table_id}/rows/{row_id}'
+    return request_delete(coda_token, url)
 
 
 def mutation_status(coda_token, request_id):
