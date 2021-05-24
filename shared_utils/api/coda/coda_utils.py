@@ -209,6 +209,10 @@ def remove_row(coda_token, doc_id, table_id, row_id):
     return request_delete(coda_token, url)
 
 
+def remove_row_by_yaml(coda_token, doc_id, table_info, row_id):
+    return remove_row(coda_token, doc_id, table_info['table_id'], row_id)
+
+
 def mutation_status(coda_token, request_id):
     url = f'mutationStatus/{request_id}'
     return request(coda_token, url)
