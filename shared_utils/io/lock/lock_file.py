@@ -1,4 +1,5 @@
 import os
+from contextlib import contextmanager
 from os.path import exists
 
 from shared_utils.common.dt import dt
@@ -24,3 +25,12 @@ def unlock_file(filename):
     if not is_locked(filename):
         raise UnlockError(filename)
     os.remove(filename + b'.lock')
+
+
+@contextmanager
+def locked_file(filename):
+    lock_file(filename)
+    try:
+        yield
+    finally:
+        unlock_file(filename)
