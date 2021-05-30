@@ -1,4 +1,5 @@
 import os
+import time
 from contextlib import contextmanager
 from os.path import exists
 
@@ -28,9 +29,19 @@ def unlock_file(filename):
 
 
 @contextmanager
-def locked_file(filename):
-    lock_file(filename)
+def locked_file(filename, attempts=1):
+    interval = 0.1
+    for attempt in range(attempts):
+        try:
+            lock_file(filename)
+            break  # successfully locked file
+        except LockError:
+            time.sleep(interval)
+            interval *= 2
+    else:  # file was already locked during all attempts
+        raise LockError(filename)
+
     try:
-        yield
+        yield  # go inside context manager body here
     finally:
         unlock_file(filename)
