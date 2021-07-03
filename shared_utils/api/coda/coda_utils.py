@@ -44,6 +44,10 @@ def request(coda_token, url, payload=None, method='get'):
     return result
 
 
+def request_get(coda_token, url):
+    return request(coda_token, url, None, 'get')
+
+
 def request_put(coda_token, url, payload):
     return request(coda_token, url, payload, 'put')
 
@@ -61,13 +65,13 @@ def get_tables(coda_token, doc_id):
 
 
 def print_tables(coda_token, doc_id):
-    tables = request(coda_token, f'docs/{doc_id}/tables')
+    tables = request_get(coda_token, f'docs/{doc_id}/tables')
     for table in tables['items']:
         print(table['id'], table['name'])
 
 
 def get_columns(coda_token, doc_id, table_id):
-    data = request(coda_token, f'docs/{doc_id}/tables/{table_id}/columns')
+    data = request_get(coda_token, f'docs/{doc_id}/tables/{table_id}/columns')
     next_link = data.get('nextPageLink')
     if next_link:
         next_data = get_next_columns(coda_token, next_link)
@@ -76,7 +80,7 @@ def get_columns(coda_token, doc_id, table_id):
 
 
 def get_next_columns(coda_token, next_link):
-    data = request(coda_token, next_link)
+    data = request_get(coda_token, next_link)
     next_next_link = data.get('nextPageLink')
     if next_next_link:
         next_data = get_next_columns(coda_token, next_next_link)
@@ -102,7 +106,7 @@ def get_rows(coda_token, doc_id, table_id, query=None):
 
 
 def get_next_rows(coda_token, next_link):
-    data = request(coda_token, next_link)
+    data = request_get(coda_token, next_link)
     next_next_link = data.get('nextPageLink')
     if next_next_link:
         next_data = get_next_rows(coda_token, next_next_link)
@@ -215,7 +219,7 @@ def remove_row_by_yaml(coda_token, doc_id, table_info, row_id):
 
 def mutation_status(coda_token, request_id):
     url = f'mutationStatus/{request_id}'
-    return request(coda_token, url)
+    return request_get(coda_token, url)
 
 
 def is_request_completed(coda_token, request_id):
