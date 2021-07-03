@@ -160,6 +160,18 @@ def print_rows(coda_token, doc_id, table_id, query=None):
     pprint(rows)
 
 
+def get_row(coda_token, doc_id, table_id, columns, row_id):  # todo
+    url = f'docs/{doc_id}/tables/{table_id}/rows/{row_id}'
+    row = request_get(coda_token, url)
+    # todo: use columns to change keys in `row`
+    return row
+
+
+def get_row_by_yaml(coda_token, doc_id, table_info, row_id):  # todo
+    return get_row(coda_token, doc_id, table_info['table_id'],
+                   table_info['columns'], row_id)
+
+
 def update_row(coda_token, doc_id, table_id, columns, row_id, data):
     url = f'docs/{doc_id}/tables/{table_id}/rows/{row_id}'
     payload = {
