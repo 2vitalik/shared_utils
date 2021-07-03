@@ -20,3 +20,9 @@ timing_skip_desc = False
 timing_prefix = '@'
 timing_suffix = ''
 timing_skip_milliseconds = False
+
+
+try:
+    from .local_conf import *
+except ImportError:
+    pass
