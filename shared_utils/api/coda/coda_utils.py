@@ -19,7 +19,7 @@ def request(coda_token, url, payload=None, method='get'):
         elif method == 'put':
             return requests.put(url, headers=headers, json=payload)
         elif method == 'delete':
-            return requests.put(url, headers=headers)
+            return requests.delete(url, headers=headers)
         else:
             raise NotImplementedError()
 
