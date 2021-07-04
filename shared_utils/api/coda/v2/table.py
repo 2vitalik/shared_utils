@@ -17,7 +17,7 @@ class CodaTable:
 
     def _list_request(self, url_suffix, params=None):  # internal
         url = f'{self.url_prefix}/{url_suffix}'
-        return self.api.list_request(url, 'get', params)
+        return self.api.list_request(url, params)
 
     def fetch_columns(self):
         ...  # todo?
