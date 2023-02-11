@@ -7,7 +7,7 @@ class CodaTable:
         self.table_id = table_id
         self.url_prefix = f'docs/{self.doc_id}/tables/{table_id}'
 
-        self.columns_cache = self.doc.columns_cache[table_id]['columns']
+        self.columns_cache = self.doc.cache.columns_cache[table_id]['columns']
         self.overridden = \
             self.doc.overridden.get(table_id, {}).get('columns', {})
 
