@@ -41,9 +41,12 @@ class CodaDoc:
         return self.api.items_request(f'docs/{self.doc_id}/{url_suffix}')
 
     def table_key(self, table_id):
+        original_name = self.cache.table_cache[table_id]
+
         if table_id in self.conf.overridden:
-            return self.conf.overridden[table_id]['name']  # todo: .get()
-        return self.cache.table_cache[table_id]
+            return self.conf.overridden[table_id].get('name', original_name)
+
+        return original_name
 
     def __getattr__(self, table_name):
         if table_name in self.tables:
