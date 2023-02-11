@@ -24,12 +24,8 @@ class CodaDoc:
             msg = f'Either `coda_api` or `coda_token` should be set'
             raise RuntimeError(msg)
 
-        # process with caches:
         self.cache = CodaDocCache(self)
-
-        # process with conf overrides:
         self.conf = CodaDocConf(self)
-        # todo: `titles` and `hidden` things for `coda_changes`?
 
         # process with `tables`:
         self.tables = {
