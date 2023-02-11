@@ -13,10 +13,22 @@ class CodaDocConf:
         self.overridden_filename = join(self.overriden_path, 'overridden.yaml')
         self.original_filename = join(self.overriden_path, 'original.yaml')
 
-        self.init_overriden()
-        self.overridden = self.load_overriden()
+        self._init_overriden()
+        self.overridden = self._load_overriden()
 
         # todo: `titles` and `hidden` things for `coda_changes`?
+
+    def _init_overriden(self):
+        original = self.update_original()
+
+        if not exists(self.overridden_filename):
+            dump_yaml(self.overridden_filename, original)
+
+    def _load_overriden(self):
+        if not exists(self.overridden_filename):
+            return {}
+
+        return load_yaml(self.overridden_filename)
 
     def update_original(self):
         original_conf = {}
@@ -33,18 +45,6 @@ class CodaDocConf:
         dump_yaml(self.original_filename, original_conf)
         return original_conf
 
-    def init_overriden(self):
-        original = self.update_original()
-
-        if not exists(self.overridden_filename):
-            dump_yaml(self.overridden_filename, original)
-
     def clear_overriden(self):
         original = self.update_original()
         dump_yaml(self.overridden_filename, original)
-
-    def load_overriden(self):
-        if not exists(self.overridden_filename):
-            return {}
-
-        return load_yaml(self.overridden_filename)

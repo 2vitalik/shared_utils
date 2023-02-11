@@ -15,15 +15,15 @@ class CodaDocCache:
 
         self.table_cache = None
         self.columns_cache = None
-        self.init_cache()
+        self._init_cache()
 
-    def init_tables_cache(self):
+    def _init_tables_cache(self):
         if not exists(self.tables_cache_filename):
-            return self.update_tables_cache()
+            return self._update_tables_cache()
 
-        return self.load_table_cache()
+        return self._load_table_cache()
 
-    def update_tables_cache(self):
+    def _update_tables_cache(self):
         tables_response = self.doc.items_request(f'tables')
 
         tables = {}
@@ -36,15 +36,15 @@ class CodaDocCache:
 
         # todo: check if changed and save also historical
         dump_yaml(self.tables_cache_filename, tables)
-        return self.load_table_cache()
+        return self._load_table_cache()
 
-    def init_columns_cache(self):
+    def _init_columns_cache(self):
         if not exists(self.columns_cache_filename):
-            return self.update_columns_cache()
+            return self._update_columns_cache()
 
-        return self.load_columns_cache()
+        return self._load_columns_cache()
 
-    def update_columns_cache(self):
+    def _update_columns_cache(self):
         columns_cache = {}
 
         for table_id, table_name in self.table_cache.items():
@@ -69,19 +69,19 @@ class CodaDocCache:
 
         # todo: check if changed and save also historical
         dump_yaml(self.columns_cache_filename, columns_cache)
-        return self.load_columns_cache()
+        return self._load_columns_cache()
 
-    def load_table_cache(self):
+    def _load_table_cache(self):
         return load_yaml(self.tables_cache_filename)
 
-    def load_columns_cache(self):
+    def _load_columns_cache(self):
         return load_yaml(self.columns_cache_filename)
 
-    def init_cache(self):
-        self.table_cache = self.init_tables_cache()
-        self.columns_cache = self.init_columns_cache()
+    def _init_cache(self):
+        self.table_cache = self._init_tables_cache()
+        self.columns_cache = self._init_columns_cache()
 
     def update_cache(self):
-        self.table_cache = self.update_tables_cache()
-        self.columns_cache = self.update_columns_cache()
+        self.table_cache = self._update_tables_cache()
+        self.columns_cache = self._update_columns_cache()
         self.doc.conf.update_original()
