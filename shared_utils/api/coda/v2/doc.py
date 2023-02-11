@@ -33,6 +33,10 @@ class CodaDoc:
             for table_id in self.cache.table_cache
         }
 
+    def update_structure(self):
+        self.cache.update_cache()
+        self.conf.update_original()
+
     def items_request(self, url_suffix):
         return self.api.items_request(f'docs/{self.doc_id}/{url_suffix}')
 

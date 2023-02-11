@@ -84,4 +84,3 @@ class CodaDocCache:
     def update_cache(self):
         self.table_cache = self._update_tables_cache()
         self.columns_cache = self._update_columns_cache()
-        self.doc.conf.update_original()
