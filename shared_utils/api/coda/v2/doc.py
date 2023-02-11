@@ -11,7 +11,7 @@ class CodaDoc:
                  cache_path='coda_cache', conf_path=None):
         # process with `doc_id`:
         if doc_id[0] != 'd':
-            raise Exception(f'Wrong doc_id: "{doc_id}"')
+            raise RuntimeError(f'Wrong doc_id: "{doc_id}"')
         self.doc_id = doc_id[1:]
 
         # process with CodaApi:
@@ -20,7 +20,7 @@ class CodaDoc:
         elif coda_token:
             self.api = CodaApi(coda_token, cache_path, conf_path)
         else:
-            raise Exception(f'Either `coda_api` or `coda_token` should be set')
+            raise RuntimeError(f'Either `coda_api` or `coda_token` should be set')
 
         # process with caches:
         self.cache_path = join(self.api.cache_path, doc_id)
