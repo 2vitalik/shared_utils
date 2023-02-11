@@ -27,8 +27,10 @@ class CodaDoc:
         self.tables_cache_filename = join(self.cache_path, 'tables.yaml')
         self.columns_cache_filename = join(self.cache_path, 'columns.yaml')
 
-        self.table_cache = self.get_tables_cache()
-        self.columns_cache = self.get_columns_cache()
+        self.tables = {}
+        self.table_cache = {}
+        self.columns_cache = {}
+        self.init_cache()
 
         # process with conf overrides:
         self.overridden = {}
@@ -50,13 +52,11 @@ class CodaDoc:
     def list_request(self, url_suffix):
         return self.api.list_request(f'docs/{self.doc_id}/{url_suffix}')
 
-    def get_tables_cache(self):
+    def init_tables_cache(self):
         if not exists(self.tables_cache_filename):
-            self.fetch_tables()
-        return load_yaml(self.tables_cache_filename)
-        # todo: save historical changes?
+            self.update_tables_cache()
 
-    def fetch_tables(self):
+    def update_tables_cache(self):
         tables = {}
 
         tables_response = self.list_request(f'tables')
@@ -67,15 +67,14 @@ class CodaDoc:
             table_name = table_data['name']
             tables[table_id] = table_name
 
+        # todo: check if changed and save also historical
         dump_yaml(self.tables_cache_filename, tables)
 
-    def get_columns_cache(self):
+    def init_columns_cache(self):
         if not exists(self.columns_cache_filename):
-            self.fetch_columns()
-        return load_yaml(self.columns_cache_filename)
-        # todo: save historical changes?
+            self.update_columns_cache()
 
-    def fetch_columns(self):
+    def update_columns_cache(self):
         columns_cache = {}
 
         for table_id, table_name in self.table_cache.items():
@@ -97,8 +96,22 @@ class CodaDoc:
                 'columns': table_columns,
             }
 
+        # todo: check if changed and save also historical
         dump_yaml(self.columns_cache_filename, columns_cache)
-        # todo: check if changed and save historical
+
+    def load_cache(self):
+        self.table_cache = load_yaml(self.tables_cache_filename)
+        self.columns_cache = load_yaml(self.columns_cache_filename)
+
+    def init_cache(self):
+        self.init_tables_cache()
+        self.init_columns_cache()
+        self.load_cache()
+
+    def update_cache(self):
+        self.update_tables_cache()
+        self.update_columns_cache()
+        self.load_cache()
 
     def save_original_conf(self):
         original_conf = {}
