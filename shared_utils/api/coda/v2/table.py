@@ -9,7 +9,7 @@ class CodaTable:
 
         self.columns_cache = self.doc.cache.columns_cache[table_id]['columns']
         self.overridden = \
-            self.doc.overridden.get(table_id, {}).get('columns', {})
+            self.doc.conf.overridden.get(table_id, {}).get('columns', {})
 
     def _request(self, url_suffix, method, params=None):  # internal
         url = f'{self.url_prefix}/{url_suffix}'

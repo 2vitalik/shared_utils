@@ -2,6 +2,7 @@ from os.path import join, exists
 
 from shared_utils.api.coda.v2.api import CodaApi
 from shared_utils.api.coda.v2.doc_cache import CodaDocCache
+from shared_utils.api.coda.v2.doc_conf import CodaDocConf
 from shared_utils.api.coda.v2.table import CodaTable
 from shared_utils.io.yamls import load_yaml, dump_yaml
 
@@ -27,14 +28,7 @@ class CodaDoc:
         self.cache = CodaDocCache(self)
 
         # process with conf overrides:
-        self.overridden = {}
-        if self.api.conf_path:
-            self.conf_path = join(self.api.conf_path, doc_id)
-            self.overridden_filename = join(self.conf_path, 'overridden.yaml')
-            self.original_filename = join(self.conf_path, 'original.yaml')
-            if exists(self.overridden_filename):
-                self.overridden = load_yaml(self.overridden_filename)
-
+        self.conf = CodaDocConf(self)
         # todo: `titles` and `hidden` things for `coda_changes`?
 
         # process with `tables`:
@@ -46,23 +40,9 @@ class CodaDoc:
     def items_request(self, url_suffix):
         return self.api.items_request(f'docs/{self.doc_id}/{url_suffix}')
 
-    def save_original_conf(self):
-        original_conf = {}
-
-        for table_id, table_data in self.cache.columns_cache.items():
-            columns = {}
-            for column_id, column_data in table_data['columns'].items():
-                columns[column_id] = column_data['name']
-            original_conf[table_id] = {
-                'name': table_data['name'],
-                'columns': columns,
-            }
-
-        dump_yaml(f'{self.original_filename}', original_conf)
-
     def table_key(self, table_id):
-        if table_id in self.overridden:
-            return self.overridden[table_id]['name']
+        if table_id in self.conf.overridden:
+            return self.conf.overridden[table_id]['name']  # todo: .get()
         return self.cache.table_cache[table_id]
 
     def __getattr__(self, table_name):
