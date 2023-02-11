@@ -18,7 +18,9 @@ class CodaDocCache:
 
     def init_tables_cache(self):
         if not exists(self.tables_cache_filename):
-            self.update_tables_cache()
+            return self.update_tables_cache()
+
+        return self.load_table_cache()
 
     def update_tables_cache(self):
         tables_response = self.doc.list_request(f'tables')
@@ -33,10 +35,13 @@ class CodaDocCache:
 
         # todo: check if changed and save also historical
         dump_yaml(self.tables_cache_filename, tables)
+        return self.load_table_cache()
 
     def init_columns_cache(self):
         if not exists(self.columns_cache_filename):
-            self.update_columns_cache()
+            return self.update_columns_cache()
+
+        return self.load_columns_cache()
 
     def update_columns_cache(self):
         columns_cache = {}
@@ -63,17 +68,18 @@ class CodaDocCache:
 
         # todo: check if changed and save also historical
         dump_yaml(self.columns_cache_filename, columns_cache)
+        return self.load_columns_cache()
 
-    def load_cache(self):
-        self.table_cache = load_yaml(self.tables_cache_filename)
-        self.columns_cache = load_yaml(self.columns_cache_filename)
+    def load_table_cache(self):
+        return load_yaml(self.tables_cache_filename)
+
+    def load_columns_cache(self):
+        return load_yaml(self.columns_cache_filename)
 
     def init_cache(self):
-        self.init_tables_cache()
-        self.init_columns_cache()
-        self.load_cache()
+        self.table_cache = self.init_tables_cache()
+        self.columns_cache = self.init_columns_cache()
 
     def update_cache(self):
-        self.update_tables_cache()
-        self.update_columns_cache()
-        self.load_cache()
+        self.table_cache = self.update_tables_cache()
+        self.columns_cache = self.update_columns_cache()
