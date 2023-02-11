@@ -21,9 +21,9 @@ class CodaDocCache:
             self.update_tables_cache()
 
     def update_tables_cache(self):
-        tables = {}
-
         tables_response = self.doc.list_request(f'tables')
+
+        tables = {}
         for table_data in tables_response:
             if table_data['tableType'] != 'table':
                 continue
@@ -42,9 +42,10 @@ class CodaDocCache:
         columns_cache = {}
 
         for table_id, table_name in self.table_cache.items():
-            table_columns = {}
+            columns_response = \
+                self.doc.list_request(f'tables/{table_id}/columns')
 
-            columns_response = self.doc.list_request(f'tables/{table_id}/columns')
+            table_columns = {}
             for column_data in columns_response:
                 column_id = column_data['id']
                 table_columns[column_id] = {
