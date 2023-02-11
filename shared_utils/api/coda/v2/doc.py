@@ -33,14 +33,14 @@ class CodaDoc:
 
         # process with `tables`:
         self.tables = {
-            self.table_key(table_id): CodaTable(self, table_id)
+            self.table_name(table_id): CodaTable(self, table_id)
             for table_id in self.cache.table_cache
         }
 
     def items_request(self, url_suffix):
         return self.api.items_request(f'docs/{self.doc_id}/{url_suffix}')
 
-    def table_key(self, table_id):
+    def table_name(self, table_id):
         original_name = self.cache.table_cache[table_id]
 
         if table_id in self.conf.overridden:
@@ -49,6 +49,7 @@ class CodaDoc:
         return original_name
 
     def __getattr__(self, table_name):
-        if table_name in self.tables:
-            return self.tables[table_name]
-        raise AttributeError()
+        if table_name not in self.tables:
+            raise AttributeError(f"Table `{table_name}` not found.")
+
+        return self.tables[table_name]
