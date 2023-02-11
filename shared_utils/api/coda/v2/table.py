@@ -49,14 +49,15 @@ class CodaTable:
             name = self._get_column_name(column_id)
             values[name] = value
 
-        return {
-            'id': item['id'],
-            'index': item['index'],
-            'display_name': item['name'],
-            'created_at': item['createdAt'],
-            'updated_at': item['updatedAt'],
-            'values': values,
+        result = {
+            '@id': item['id'],
+            '@index': item['index'],
+            '@display_name': item['name'],
+            '@created_at': item['createdAt'],
+            '@updated_at': item['updatedAt'],
         }
+        result.update(values)
+        return result
 
     def get(self, row_id):
         item = self._request(f'rows/{row_id}', 'get')
