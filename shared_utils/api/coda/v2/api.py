@@ -29,8 +29,9 @@ class CodaApi:
             raise
         try:
             response.raise_for_status()  # Throw if there was an error (1)
-        except HTTPError:
+        except HTTPError as e:
             ...  # todo: slack_error ?
+            print('HttpError:', str(e))
 
             time.sleep(1)
             # make another attempt:
