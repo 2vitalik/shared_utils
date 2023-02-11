@@ -23,7 +23,7 @@ class CodaDocCache:
         return self.load_table_cache()
 
     def update_tables_cache(self):
-        tables_response = self.doc.list_request(f'tables')
+        tables_response = self.doc.items_request(f'tables')
 
         tables = {}
         for table_data in tables_response:
@@ -48,7 +48,7 @@ class CodaDocCache:
 
         for table_id, table_name in self.table_cache.items():
             columns_response = \
-                self.doc.list_request(f'tables/{table_id}/columns')
+                self.doc.items_request(f'tables/{table_id}/columns')
 
             table_columns = {}
             for column_data in columns_response:

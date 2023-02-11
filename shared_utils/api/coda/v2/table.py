@@ -15,9 +15,9 @@ class CodaTable:
         url = f'{self.url_prefix}/{url_suffix}'
         return self.api.request(url, method, params)
 
-    def _list_request(self, url_suffix, params=None):  # internal
+    def _items_request(self, url_suffix, params=None):  # internal
         url = f'{self.url_prefix}/{url_suffix}'
-        return self.api.list_request(url, params)
+        return self.api.items_request(url, params)
 
     def fetch_columns(self):
         ...  # todo?
@@ -63,7 +63,7 @@ class CodaTable:
         return self._get_item_values(item)
 
     def all(self):  # todo: sortBy, valueFormat ?
-        response = self._list_request('rows', {'limit': 500})
+        response = self._items_request('rows', {'limit': 500})
         return [self._get_item_values(item) for item in response]
 
     def filter(self, query):

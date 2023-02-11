@@ -42,8 +42,8 @@ class CodaDoc:
             for table_id in self.cache.table_cache
         }
 
-    def list_request(self, url_suffix):
-        return self.api.list_request(f'docs/{self.doc_id}/{url_suffix}')
+    def items_request(self, url_suffix):
+        return self.api.items_request(f'docs/{self.doc_id}/{url_suffix}')
 
     def save_original_conf(self):
         original_conf = {}

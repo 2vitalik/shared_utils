@@ -57,7 +57,7 @@ class CodaApi:
         response = self.try_request(url, method, headers, params)
         return response.json()
 
-    def list_request(self, url, payload=None):
+    def items_request(self, url, payload=None):
         response = self.request(url, 'get', payload)
         items = response['items']
         while 'nextPageLink' in response:
