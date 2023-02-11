@@ -2,7 +2,6 @@ from os.path import join, exists
 
 from shared_utils.api.coda.v2.api import CodaApi
 from shared_utils.api.coda.v2.table import CodaTable
-from shared_utils.conf import conf
 from shared_utils.io.yamls import load_yaml, dump_yaml
 
 
@@ -124,12 +123,3 @@ class CodaDoc:
         if table_name in self.tables:
             return self.tables[table_name]
         raise AttributeError()
-
-
-if __name__ == '__main__':
-    doc = CodaDoc('dBPqqG0xD2g', coda_token=conf.coda_token,
-                  conf_path='coda_conf')
-    # doc.fetch_columns()
-    # doc.save_original_conf()
-    # doc.tables['Entries'].all()
-    print(doc.categories.all())
