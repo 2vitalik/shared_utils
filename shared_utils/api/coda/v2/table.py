@@ -89,7 +89,7 @@ class CodaTable:
             'rows': [self._get_row_cells(row)
                      for row in rows]
         }
-        return self._request(f'rows', 'put', params)
+        return self._request(f'rows', 'post', params)
 
     def update(self, row_id, changes):
         params = {
