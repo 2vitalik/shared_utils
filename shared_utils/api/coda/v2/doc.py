@@ -8,7 +8,7 @@ from shared_utils.io.yamls import load_yaml, dump_yaml
 
 class CodaDoc:
     def __init__(self, doc_id, coda_api=None, coda_token=None,
-                 cache_path='coda_cache', conf_path=None):
+                 conf_path='coda_conf'):
         # process with `doc_id`:
         if doc_id[0] != 'd':
             raise RuntimeError(f'Wrong doc_id: "{doc_id}"')
@@ -18,9 +18,10 @@ class CodaDoc:
         if coda_api:
             self.api = coda_api
         elif coda_token:
-            self.api = CodaApi(coda_token, cache_path, conf_path)
+            self.api = CodaApi(coda_token, conf_path)
         else:
-            raise RuntimeError(f'Either `coda_api` or `coda_token` should be set')
+            msg = f'Either `coda_api` or `coda_token` should be set'
+            raise RuntimeError(msg)
 
         # process with caches:
         self.cache = CodaDocCache(self)

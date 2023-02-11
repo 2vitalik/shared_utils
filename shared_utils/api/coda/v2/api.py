@@ -5,9 +5,8 @@ from requests.exceptions import ConnectionError, HTTPError
 
 
 class CodaApi:
-    def __init__(self, coda_token, cache_path='coda_cache', conf_path=None):
+    def __init__(self, coda_token, conf_path=None):
         self.coda_token = coda_token  # todo: try to make it class attribute?
-        self.cache_path = cache_path
         self.conf_path = conf_path
 
     def raw_request(self, url, method, headers, params):

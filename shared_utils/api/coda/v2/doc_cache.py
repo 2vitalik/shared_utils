@@ -7,7 +7,8 @@ class CodaDocCache:
     def __init__(self, coda_doc):
         self.doc = coda_doc
 
-        self.cache_path = join(self.doc.api.cache_path, f'd{self.doc.doc_id}')
+        self.cache_path = \
+            join(self.doc.api.conf_path, f'd{self.doc.doc_id}', 'cache')
 
         self.tables_cache_filename = join(self.cache_path, 'tables.yaml')
         self.columns_cache_filename = join(self.cache_path, 'columns.yaml')
