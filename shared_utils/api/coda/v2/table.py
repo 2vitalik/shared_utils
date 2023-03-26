@@ -95,7 +95,7 @@ class CodaTable:
         params = {
             'row': self._get_row_cells(changes)
         }
-        return self._request(f'rows/{row_id}', 'post', params)
+        return self._request(f'rows/{row_id}', 'put', params)
 
     def remove(self, row_id):
         self._request(f'rows/{row_id}', 'delete')
