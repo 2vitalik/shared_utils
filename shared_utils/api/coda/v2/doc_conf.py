@@ -26,7 +26,7 @@ class CodaDocConf:
 
     def _load_overriden(self):
         if not exists(self.overridden_filename):
-            print(f"File doesn't exist: {self.overridden_filename}")
+            # print(f"File doesn't exist: {self.overridden_filename}")
             return {}
 
         return load_yaml(self.overridden_filename)

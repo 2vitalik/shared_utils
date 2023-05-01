@@ -12,6 +12,10 @@ class CodaTable:
             self.doc.conf.overridden.get(table_id, {}).get('columns', {})
         self.customize = \
             self.doc.conf.overridden.get(table_id, {}).get('customize', {})
+        self.columns = {
+            column_id: self._get_column_name(column_id)
+            for column_id in self.columns_cache.keys()
+        }
 
     def _request(self, url_suffix, method, params=None):  # internal
         url = f'{self.url_prefix}/{url_suffix}'
