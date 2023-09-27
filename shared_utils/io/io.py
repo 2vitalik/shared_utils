@@ -6,8 +6,12 @@ from shared_utils.io.path import encoded_filename, ensure_parent_dir
 
 @encoded_filename
 def read(filename):
-    with open(filename, encoding='utf-8') as f:
-        return f.read()
+    try:
+        with open(filename, encoding='utf-8') as f:
+            return f.read()
+    except UnicodeDecodeError:
+        with open(filename, encoding='cp1251') as f:
+            return f.read()
 
 
 @encoded_filename
