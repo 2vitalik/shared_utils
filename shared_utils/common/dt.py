@@ -13,6 +13,8 @@ formats = {
     'Ym/Ymd': '%Y-%m/%Y-%m-%d',
     'Ym/dh': '%Y-%m/%dd-%Hh',
     'Ym/dts': '%Y-%m/%Y-%m-%d__%H-%M-%S',
+    'Y/Ym/Ymd': '%Y/%Y-%m/%Y-%m-%d',
+    'Y/Ym/dts': '%Y/%Y-%m/%Y-%m-%d__%H-%M-%S',
 }
 
 
