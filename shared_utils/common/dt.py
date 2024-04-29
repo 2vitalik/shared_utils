@@ -6,6 +6,7 @@ PLUS_HOURS = 2  # info: difference with server time
 formats = {
     'dt': '%Y-%m-%d %H:%M:%S',
     'dts': '%Y-%m-%d__%H-%M-%S',  # info: datetime slug
+    'dtm': '%Y-%m-%d__%H-%M',  # info: datetime minutes
     'Ymd': '%Y-%m-%d',
     '[hms]': '[%H:%M:%S]',
     'Ym': '%Y-%m',
